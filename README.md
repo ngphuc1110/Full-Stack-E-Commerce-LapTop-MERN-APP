@@ -1,9 +1,9 @@
 # Full-Stack-E-Commerce-LapTop-MERN-APP
- Learn to make a MERN APP
+  [Learn to make a MERN APP]
+# test2 [webdev-intern-assignment]
  
 I'm still working on this project. It still has some unfinished functions. But I find it adaptable to your requirements.
 
-# test2 [webdev-intern-assignment]
 
 # How to run this App:
 1. You just need to clone
