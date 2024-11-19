@@ -16,7 +16,7 @@ I'm still working on this project. It still has some unfinished functions. But I
 - Username: phuc.11102001@gmail.com 
 - Password: 123 
 
-- You can create another account yourself and it will default to the GENERAL (reader) role, however you can edit the role using the ADMIN account.
+- You can create another account by yourself and it will default to the GENERAL (reader) role, however you can edit the role using the ADMIN account.
 - I'm using MongoDB Atlas Cloud Platform, so you no need to care how to set up database, the link to connect to Database is in the .env file
 
 
