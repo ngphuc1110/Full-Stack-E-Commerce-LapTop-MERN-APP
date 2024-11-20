@@ -22,6 +22,7 @@ const ProductDetails = () => {
         sellingPrice: "",
     })
     const params = useParams()
+    const userId = params?.id
     const [loading, setLoading] = useState(false)
     const productImageListLoading = new Array(4).fill(null)
     const [activeImage, setActiveImage] = useState("")
@@ -45,16 +46,16 @@ const ProductDetails = () => {
             })
         })
         setLoading(false)
+        console.log("productId", params?.id)
         const dataResponse = await response.json()
-
+        console.log("dataResponse", dataResponse)
         setData(dataResponse?.data)
         setActiveImage(dataResponse?.data?.productImage[0])
     }
 
-
     useEffect(() => {
         fetchProductDetails()
-    }, [])
+    }, [userId])
 
     const handleMouseEnterProduct = (imageURL) => {
         setActiveImage(imageURL)
@@ -77,6 +78,7 @@ const ProductDetails = () => {
     const handleLeaveImageZoom = () => {
         setZoomImage(false)
     }
+
     return (
         <div className='container mx-auto p-6 px-8  '>
             <div className='min-h-[220px] flex flex-col lg:flex-row gap-4'>
@@ -106,7 +108,7 @@ const ProductDetails = () => {
                     <div className='h-full'>
                         {
                             loading ? (
-                                <div className='flex gap-2 lg:flex-col overflow-scroll scrollbar-none h-full'>
+                                <div className='flex lg:flex-col overflow-scroll scrollbar-none h-full'>
                                     {
                                         productImageListLoading.map(el => {
                                             return (
