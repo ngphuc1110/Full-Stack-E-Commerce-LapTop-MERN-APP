@@ -20,7 +20,7 @@ async function updateUser(req, res) {
 
         res.json({
             data: updateUser,
-            message: "User Update Successfully!",
+            message: "User Update Successfully!!!",
             error: false,
             success: true
         })

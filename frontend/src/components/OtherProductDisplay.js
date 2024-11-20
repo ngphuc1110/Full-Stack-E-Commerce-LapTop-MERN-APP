@@ -1,13 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import fetchBrandWiseProduct from '../helper/fetchBrandWiseProduct'
 import currencyFormat from '../helper/currencyFormat'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import addToCart from '../helper/addToCart';
+import Context from '../context';
 
 const OtherProductDisplay = ({ brandName, heading }) => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const loadingList = new Array(13).fill(null)
+    const navigate = useNavigate()
+    const { fetchUserAddToCart } = useContext(Context)
+    const handleAddToCart = async (e, id) => {
+        await addToCart(e, id)
+        fetchUserAddToCart()
+    }
 
     const fetchData = async () => {
         setLoading(true)
@@ -54,7 +61,7 @@ const OtherProductDisplay = ({ brandName, heading }) => {
                     ) : (
                         data.map((product, index) => {
                             return (
-                                <Link to={"product/" + product?._id} className='w-full min-w-[320px] md:min-w-[350px] max-w-[320px] md:max-w-[350px] bg-white rounded-sm shadow '>
+                                <Link to={product?._id} className='w-full min-w-[320px] md:min-w-[350px] max-w-[320px] md:max-w-[350px] bg-white rounded-sm shadow '>
                                     <div className='bg-slate-200 h-60 p-4 min-w-[120px] md:min-w-[145px] flex justify-center items-center'>
                                         <img src={product.productImage[0]} className='object-scale-down h-full mix-blend-multiply hover:scale-105 transition-all' />
                                     </div>
@@ -65,7 +72,7 @@ const OtherProductDisplay = ({ brandName, heading }) => {
                                                 <p className='text-slate-400 line-through'>{currencyFormat(product?.price)}</p>
                                                 <p className='text-blue-700 font-medium'>{currencyFormat(product?.sellingPrice)}</p>
                                             </div>
-                                            <button className='bg-red-500 hover:bg-red-700 text-white rounded-full px-5 text-sm py-1 ' onClick={(e) => addToCart(e, product?._id)}>Add to cart</button>
+                                            <button className='bg-red-500 hover:bg-red-700 text-white rounded-full px-5 text-sm py-1 ' onClick={(e) => handleAddToCart(e, product?._id)}>Add to cart</button>
                                         </div>
                                     </div>
                                 </Link>

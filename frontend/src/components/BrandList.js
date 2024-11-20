@@ -14,18 +14,11 @@ const BrandList = () => {
         const dataResponse = await response.json()
         setLoading(false)
         setBrandProduct(dataResponse.data)
-        // const updatedData = dataResponse.data.map(item => ({
-        //     ...item, // Giữ nguyên các thuộc tính ban đầu của đối tượng
-        //     brandLogo: 'link-to-brand-logo', // Thêm mới thuộc tính
-        // }));
-
-        // setBrandProduct(updatedData);
 
     }
 
     useEffect(() => {
         fetchBrandProduct()
-        console.log(brandProduct)
     }, [])
 
     return (

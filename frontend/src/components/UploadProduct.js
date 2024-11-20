@@ -268,7 +268,7 @@ const UploadProduct = ({
 
                     <label htmlFor='description' className='mt-3' >Description: </label>
                     <textarea
-                        className='h-28 bg-slate-100 border resize-none'
+                        className='h-28 bg-slate-100  resize-none'
                         placeholder='Enter Product description'
                         rows={3}
                         onChange={handleOnChage}

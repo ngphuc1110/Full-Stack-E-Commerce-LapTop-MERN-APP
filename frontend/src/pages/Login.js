@@ -17,7 +17,7 @@ const Login = () => {
     })
 
     const navigate = useNavigate()
-    const { fetchUserDetail } = useContext(Context)
+    const { fetchUserDetail, fetchUserAddToCart } = useContext(Context)
 
 
     const handleOnChange = (e) => {
@@ -48,6 +48,7 @@ const Login = () => {
             toast.success(dataApi.message)
             navigate('/')
             fetchUserDetail()
+            fetchUserAddToCart()
         }
 
         if (dataApi.error) {
@@ -58,9 +59,9 @@ const Login = () => {
 
     return (
         <section id="login">
-            <div className='mx-auto container p-4'>
+            <div className='mx-auto container p-4 h-[583px]'>
 
-                <div className='bg-white p-5 py-5 w-full max-w-md mx-auto'>
+                <div className='bg-white p-5 py-10 w-full max-w-md mx-auto'>
                     <div className=' w-20 h-20 mx-auto relative overflow-hidden rounded-full'>
                         <img src={loginIcons} alt='login icons' />
                     </div>

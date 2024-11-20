@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import fetchBrandWiseProduct from '../helper/fetchBrandWiseProduct'
 import currencyFormat from '../helper/currencyFormat'
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import addToCart from '../helper/addToCart';
+import Context from '../context';
 
 const VerticalCartProduct = ({ brandName, heading }) => {
     const [data, setData] = useState([])
@@ -13,6 +14,12 @@ const VerticalCartProduct = ({ brandName, heading }) => {
 
     const [scroll, setScroll] = useState(0)
     const scrollElement = useRef()
+
+    const { fetchUserAddToCart } = useContext(Context)
+    const handleAddToCart = async (e, id) => {
+        await addToCart(e, id)
+        fetchUserAddToCart()
+    }
     const fetchData = async () => {
         setLoading(true)
         const brandProduct = await fetchBrandWiseProduct(brandName)
@@ -75,7 +82,7 @@ const VerticalCartProduct = ({ brandName, heading }) => {
                                                 <p className='text-slate-400 line-through'>{currencyFormat(product?.price)}</p>
                                                 <p className='text-blue-700 font-medium'>{currencyFormat(product?.sellingPrice)}</p>
                                             </div>
-                                            <button className='bg-red-500 hover:bg-red-700 text-white rounded-full px-5 text-sm py-1 ' onClick={(e) => addToCart(e, product?._id)}>Add to cart</button>
+                                            <button className='bg-red-500 hover:bg-red-700 text-white rounded-full px-5 text-sm py-1 ' onClick={(e) => handleAddToCart(e, product?._id)}>Add to cart</button>
                                         </div>
                                     </div>
                                 </Link>

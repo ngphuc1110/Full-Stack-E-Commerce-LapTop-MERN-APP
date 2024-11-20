@@ -9,12 +9,17 @@ const authToken = require('../middleware/authToken')
 const userLogOut = require('../controller/user/userLogOut')
 const allUsers = require('../controller/user/allUsers')
 const updateUser = require('../controller/user/updateUser')
+const removeUser = require('../controller/user/removeUser')
 const UploadProductController = require('../controller/product/uploadProduct')
 const getProductController = require('../controller/product/getProduct')
 const updateProductController = require('../controller/product/updateProduct')
 const getBrandProduct = require('../controller/product/getBrandProductOne')
 const getBrandWiseProduct = require('../controller/product/getBrandWiseProduct')
 const getProductDetail = require('../controller/product/getProductDetail')
+const addToCartController = require('../controller/user/addToCartController')
+const countAddToCartProduct = require('../controller/user/countAddToCartProduct')
+const addToCartViewProduct = require('../controller/user/addToCartViewProduct')
+
 
 router.post("/signup", userSignUpController)
 router.post("/signin", userSignInController)
@@ -24,6 +29,7 @@ router.get("/logout", userLogOut)
 //admin panel 
 router.get("/all-users", authToken, allUsers)
 router.post("/update-user", authToken, updateUser)
+router.post("/remove-user", authToken, removeUser)
 
 //product
 router.post("/upload-product", authToken, UploadProductController)
@@ -32,5 +38,10 @@ router.post("/update-product", authToken, updateProductController)
 router.get("/get-productBrand", getBrandProduct)
 router.post("/brand-product", getBrandWiseProduct)
 router.post("/product-details", getProductDetail)
+
+//user add to cart
+router.post("/add-to-cart", authToken, addToCartController)
+router.get("/count-add-to-cart-products", authToken, countAddToCartProduct)
+router.get("/view-cart-products", authToken, addToCartViewProduct)
 
 module.exports = router

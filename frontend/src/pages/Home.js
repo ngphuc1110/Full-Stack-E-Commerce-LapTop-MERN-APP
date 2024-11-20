@@ -11,7 +11,7 @@ const Home = () => {
             <BannerProduct />
 
 
-            <HorizontalCardProduct brandName={"msi"} heading={"Popular's LapTops"} />
+            <HorizontalCardProduct brandName={""} heading={"Popular's LapTops"} />
             <VerticalCartProduct brandName={"acer"} heading={"ACER"} />
             <VerticalCartProduct brandName={"asus"} heading={"ASUS"} />
             <VerticalCartProduct brandName={"dell"} heading={"DELL"} />

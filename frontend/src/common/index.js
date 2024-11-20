@@ -25,6 +25,10 @@ const SummaryApi = {
         url: `${backendDomin}/api/update-user`,
         method: "post"
     },
+    remove_user: {
+        url: `${backendDomin}/api/remove-user`,
+        method: "post"
+    },
     uploadProduct: {
         url: `${backendDomin}/api/upload-product`,
         method: "post"
@@ -48,8 +52,19 @@ const SummaryApi = {
     productDetails: {
         url: `${backendDomin}/api/product-details`,
         method: "post"
+    },
+    addToCart: {
+        url: `${backendDomin}/api/add-to-cart`,
+        method: "post"
+    },
+    addToCartProductCount: {
+        url: `${backendDomin}/api/count-add-to-cart-products`,
+        method: "get"
+    },
+    viewCartProduct: {
+        url: `${backendDomin}/api/view-cart-products`,
+        method: "get"
     }
-
 
 }
 

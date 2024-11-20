@@ -3,7 +3,9 @@ import SummaryApi from '../common'
 import { toast } from 'react-toastify'
 import moment from 'moment'
 import { MdModeEdit } from "react-icons/md";
+import { FaTrash } from "react-icons/fa";
 import ChangeUserRole from '../components/ChangeUserRole';
+
 
 const AllUsers = () => {
 
@@ -47,7 +49,8 @@ const AllUsers = () => {
                         <th>Email</th>
                         <th>Role</th>
                         <th>Created Date</th>
-                        <th>Action</th>
+                        <th>Edit</th>
+                        {/* <th>Delete</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -61,7 +64,7 @@ const AllUsers = () => {
                                     <td>{el?.role}</td>
                                     <td>{moment(el?.createdAt).format('LL')}</td>
                                     <td>
-                                        <button className='bg-green-200 rounded-full p-2 cursor-pointer hover:bg-green-400 hover:text-white'
+                                        <button className='bg-green-200 rounded-full p-2 cursor-pointer hover:bg-green-500 hover:text-white'
                                             onClick={() => {
                                                 setUpdateUserDetails(el)
                                                 setOpenUpdateRole(true)
@@ -69,6 +72,15 @@ const AllUsers = () => {
                                             <MdModeEdit />
                                         </button>
                                     </td>
+                                    {/* <td>
+                                        <button className='bg-red-200 rounded-full p-2 cursor-pointer hover:bg-red-500 hover:text-white'
+                                            onClick={() => {
+                                                setUpdateUserDetails(el)
+
+                                            }}>
+                                            <FaTrash />
+                                        </button>
+                                    </td> */}
                                 </tr>
                             )
                         })

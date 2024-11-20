@@ -10,6 +10,7 @@ import AllUsers from '../pages/AllUsers'
 import AllProducts from '../pages/AllProducts'
 import BrandProduct from '../pages/BrandProduct'
 import ProductDetails from '../pages/ProductDetails'
+import Cart from '../pages/Cart'
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
             {
                 path: "brand/:brandName",
                 element: <BrandProduct />
+            },
+            {
+                path: "cart",
+                element: <Cart />
             },
             {
                 path: "product/:id",
