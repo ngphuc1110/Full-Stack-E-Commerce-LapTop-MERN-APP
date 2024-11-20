@@ -28,4 +28,4 @@ I'm still working on this project. It still has some unfinished functions. But I
   
 - Scalable system (e.g., adding a new type of user) (use can add more role of user in 'frontend\src\common\role.js'  Adjust the user's information structure in '\backend\models\userModel.js')
   
-- Any other features you think are necessary (I'm still working on this project, I think I will add a chatbot to help customers find products that match their thoughts)
+- Any other features you think are necessary (I'm still working on this project, I think I will add a chatbot to help customers find products that match their opinions)
