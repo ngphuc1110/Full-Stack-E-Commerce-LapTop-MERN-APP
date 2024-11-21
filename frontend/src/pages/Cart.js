@@ -34,6 +34,7 @@ const Cart = () => {
                         <p className='bg-white py-7 '>No Data</p>
                     )
                 }
+                <p>Shopping Cart</p>
             </div>
         </div>
     )

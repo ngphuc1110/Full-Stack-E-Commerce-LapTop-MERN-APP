@@ -37,7 +37,7 @@ const BrandList = () => {
                         (
                             brandProduct.map((product, index) => {
                                 return (
-                                    <Link to={"/brand/" + product?.brandName} className='cursor-pointer' key={product?.brandName}>
+                                    <Link to={"category-product/?brand=" + product?.brandName} className='cursor-pointer' key={product?.brandName}>
                                         <div className='w-40 h-40 md:w-40 md:h-40 overflow-hidden p-2 bg-slate-200 flex items-center justify-center'>
                                             <img src={product?.productImage[0]} alt={product?.brandName} className='h-full object-scale-down mix-blend-multiply hover:scale-125 transition-all ' />
                                         </div>

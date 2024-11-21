@@ -4,12 +4,14 @@ import currencyFormat from '../helper/currencyFormat'
 import { Link, useNavigate } from 'react-router-dom';
 import addToCart from '../helper/addToCart';
 import Context from '../context';
+import scrollTop from '../helper/scrollTop';
 
 const OtherProductDisplay = ({ brandName, heading }) => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const loadingList = new Array(13).fill(null)
     const navigate = useNavigate()
+
     const { fetchUserAddToCart } = useContext(Context)
     const handleAddToCart = async (e, id) => {
         await addToCart(e, id)
@@ -61,12 +63,12 @@ const OtherProductDisplay = ({ brandName, heading }) => {
                     ) : (
                         data.map((product, index) => {
                             return (
-                                <Link to={"/product/" + product?._id} className='w-full min-w-[320px] md:min-w-[350px] max-w-[320px] md:max-w-[350px] bg-white rounded-sm shadow '>
-                                    <div className='bg-slate-200 h-60 p-4 min-w-[120px] md:min-w-[145px] flex justify-center items-center'>
+                                <div className='w-full min-w-[320px] md:min-w-[350px] max-w-[320px] md:max-w-[350px] bg-white rounded-sm shadow ' onClick={scrollTop}>
+                                    <Link to={"/product/" + product?._id} className='bg-slate-200 h-60 p-4 min-w-[120px] md:min-w-[145px] flex justify-center items-center'>
                                         <img src={product.productImage[0]} className='object-scale-down h-full mix-blend-multiply hover:scale-105 transition-all' />
-                                    </div>
+                                    </Link>
                                     <div className='p-4 grid gap-3'>
-                                        <h2 className='font-semibold text-sm md:text-sm text-ellipsis line-clamp-2 text-black text-center'>{product?.productName}</h2>
+                                        <Link to={"/product/" + product?._id} className='font-semibold text-sm md:text-sm text-ellipsis line-clamp-2 text-black text-center'>{product?.productName}</Link>
                                         <div className='flex justify-between mx-5'>
                                             <div className='py-2'>
                                                 <p className='text-slate-400 line-through'>{currencyFormat(product?.price)}</p>
@@ -75,7 +77,7 @@ const OtherProductDisplay = ({ brandName, heading }) => {
                                             <button className='bg-red-500 hover:bg-red-700 text-white rounded-full px-5 text-sm py-1 ' onClick={(e) => handleAddToCart(e, product?._id)}>Add to cart</button>
                                         </div>
                                     </div>
-                                </Link>
+                                </div>
                             )
                         })
                     )

@@ -35,7 +35,7 @@ const router = createBrowserRouter([
                 element: <SignUp />
             },
             {
-                path: "brand/:brandName",
+                path: "category-product",
                 element: <BrandProduct />
             },
             {
