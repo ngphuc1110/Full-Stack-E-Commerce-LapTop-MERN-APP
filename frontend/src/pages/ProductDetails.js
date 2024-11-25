@@ -110,9 +110,9 @@ const ProductDetails = () => {
                             loading ? (
                                 <div className='flex lg:flex-col overflow-scroll scrollbar-none h-full'>
                                     {
-                                        productImageListLoading.map(el => {
+                                        productImageListLoading.map((el, index) => {
                                             return (
-                                                <div className=' h-20 w-20 bg-slate-200 rounded animate-pulse' key={'loadingImage'}>
+                                                <div className=' h-20 w-20 bg-slate-200 rounded animate-pulse' key={'loadingImage' + index}>
 
                                                 </div>
                                             )
@@ -143,7 +143,7 @@ const ProductDetails = () => {
                 {/* Product Details */}
                 {
                     loading ? (
-                        <div className='grid gap-1 w-full'>
+                        <div className='grid gap-1 w-full' >
                             <p className='bg-slate-200 animate-pulse  h-6 lg:h-8 w-full rounded-full inline-block'></p>
                             <h2 className='text-2xl lg:text-4xl font-medium h-6 lg:h-8  bg-slate-200 animate-pulse w-full'></h2>
                             <p className='capitalize text-slate-400 bg-slate-200 min-w-[100px] animate-pulse h-6 lg:h-8  w-full'></p>

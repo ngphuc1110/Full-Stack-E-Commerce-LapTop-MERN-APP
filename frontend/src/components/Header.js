@@ -19,9 +19,9 @@ const Header = () => {
     const context = useContext(Context)
     const navigate = useNavigate()
     const searchInput = useLocation()
-    //const [search, setSearch] = useState(searchInput?.search.split("=")[1])
-
-    console.log("searchInput", searchInput?.search.split("=")[1])
+    const URLSearch = new URLSearchParams(searchInput?.search)
+    const searchQuery = URLSearch.getAll("q")
+    const [search, setSearch] = useState(searchQuery)
 
     const handleLogout = async () => {
         const fetchData = await fetch(SummaryApi.logout_user.url, {
@@ -32,6 +32,7 @@ const Header = () => {
         if (data.success) {
             toast.success(data.message)
             dispatch(setUserDetails(null))
+            navigate("/")
         }
         if (data.error) {
             toast.error(data.message)
@@ -42,7 +43,7 @@ const Header = () => {
     }
     const handleSearch = (e) => {
         const { value } = e.target
-        //setSearch = value
+        setSearch(value)
         if (value) {
             navigate(`/search?q=${value}`)
         } else {
@@ -57,8 +58,8 @@ const Header = () => {
                         <Logo w={100} h={60} />
                     </Link>
                 </div>
-                <div className='hidden lg:flex items-center w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2'>
-                    <input type='text' placeholder='Seach products here ...' className='w-full outline-none' onChange={handleSearch} /*value={search}*/ />
+                <div className='hidden lg:flex items-center w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2 '>
+                    <input type='text' placeholder='Search products here ...' className='w-full outline-none' onChange={handleSearch} value={search} />
                     <div className='text-lg min-w-[50px] h-8 bg-red-500 flex items-center justify-center rounded-r-full text-white cursor-pointer hover:bg-red-700'>
                         <IoSearch />
                     </div>

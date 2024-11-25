@@ -16,23 +16,25 @@ const BrandProduct = () => {
     const location = useLocation()
     const urlSearch = new URLSearchParams(location.search)
     const urlCategoryListinArray = urlSearch.getAll("brand")
-    const urlCategoryListinArray2 = urlSearch.getAll("cpu")
+    //const urlCategoryListinArray2 = urlSearch.getAll("cpu")
     // const urlCategoryListinArray = [
     //     ...urlCategoryListinArray1,
     //     ...urlCategoryListinArray2
     // ]
-    const rulCategoryListObject = {}
+    const urlCategoryListObject = {}
     urlCategoryListinArray.forEach(el => {
-        rulCategoryListObject[el] = true
+        urlCategoryListObject[el] = true
     })
-    console.log("rulCategoryListObject", rulCategoryListObject)
-    console.log("urlCategoryListinArray", urlCategoryListinArray)
 
 
 
-    const [selectBrand, setSelectBrand] = useState(rulCategoryListObject)
+
+    const [selectBrand, setSelectBrand] = useState(urlCategoryListObject)
+    const [selectChipSet, setSelectChipSet] = useState({})
+    const [selectGPU, setselectGPU] = useState({})
     const [filterCategoryList, setFilterCategoryList] = useState([])
-
+    const [filterChipSetList, setFilterChipSetList] = useState([])
+    const [filterGPUList, setFilterGPUList] = useState([])
     const [sortBy, setSortBy] = useState("")
 
 
@@ -43,7 +45,9 @@ const BrandProduct = () => {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                brandName: filterCategoryList
+                brandName: filterCategoryList,
+                chipSet: filterChipSetList,
+                gpu: filterGPUList,
             })
         })
 
@@ -62,20 +66,64 @@ const BrandProduct = () => {
         })
     }
 
+    const handleSelectChipSet = (e) => {
+        const { name, value, checked } = e.target
+
+        setSelectChipSet((preve) => {
+            return {
+                ...preve,
+                [value]: checked
+            }
+        })
+
+    }
+
+    const handleSelectGPU = (e) => {
+        const { name, value, checked } = e.target
+
+        setselectGPU((preve) => {
+            return {
+                ...preve,
+                [value]: checked
+            }
+        })
+
+    }
+
     useEffect(() => {
         fetchData()
+
     }, [filterCategoryList])
 
     useEffect(() => {
         const arrayOfBrand = Object.keys(selectBrand).map(brandKeyName => {
-            console.log("brandKeyName", brandKeyName)
+
             if (selectBrand[brandKeyName]) {
                 return brandKeyName
             }
             return null
         }).filter(el => el)
 
+        const arrayOfCPU = Object.keys(selectChipSet).map(chipSetdKeyName => {
+
+            if (selectChipSet[chipSetdKeyName]) {
+                return chipSetdKeyName
+            }
+            return null
+        }).filter(el => el)
+
+        const arrayOfGPU = Object.keys(selectGPU).map(GPUKeyName => {
+
+            if (selectGPU[GPUKeyName]) {
+                return GPUKeyName
+            }
+            return null
+        }).filter(el => el)
+
+        //const combinedArray = [...arrayOfBrand, ...arrayOfCPU, ...arrayOfGPU];
         setFilterCategoryList(arrayOfBrand)
+        setFilterChipSetList(arrayOfCPU)
+        setFilterGPUList(arrayOfGPU)
 
         //format for url change when change on the chexbox
         const urlFormat = arrayOfBrand.map((el, index) => {
@@ -85,8 +133,7 @@ const BrandProduct = () => {
             return `brand=${el}&&`
         })
         navigate("/category-product/?" + urlFormat.join(""))
-        //category-product/?brand=acer&&brand=asus&&cpu=5
-    }, [selectBrand])
+    }, [selectBrand, selectChipSet, selectGPU])
 
     const handleOnChangeSortBy = (e) => {
         const { value } = e.target
@@ -99,9 +146,9 @@ const BrandProduct = () => {
         }
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-    }, [sortBy])
+    // }, [sortBy])
 
     return (
         <div className='container mx-auto p-4 '>
@@ -150,7 +197,7 @@ const BrandProduct = () => {
                                     productChipSet.map((chipSet, index) => {
                                         return (
                                             <div className='flex items-center gap-3'>
-                                                <input type='checkbox' name={"chipSet"} id={chipSet?.value} />
+                                                <input type='checkbox' name={"chipSet"} id={chipSet?.value} checked={selectChipSet[chipSet?.value]} value={chipSet?.value} key={chipSet?.id} onChange={handleSelectChipSet} />
                                                 <label htmlFor={chipSet?.value}>{chipSet?.label}</label>
                                             </div>
                                         )
@@ -166,7 +213,7 @@ const BrandProduct = () => {
                                     productGPU.map((gpu, index) => {
                                         return (
                                             <div className='flex items-center gap-3'>
-                                                <input type='checkbox' name={"gpu"} id={gpu?.value} />
+                                                <input type='checkbox' name={"gpu"} id={gpu?.value} checked={selectGPU[gpu?.value]} value={gpu?.value} key={gpu?.id} onChange={handleSelectGPU} />
                                                 <label htmlFor={gpu?.value}>{gpu?.label}</label>
                                             </div>
                                         )
@@ -177,7 +224,7 @@ const BrandProduct = () => {
 
                     </div>
                 </div>
-                {/* Display Product        */}
+                {/* Display Product  */}
                 <div className='px-10'>
                     <p className='font-medium text-slate-400 text-lg my-2 '>Search Results: {data.length}</p>
                     <div className='min-h-[calc(100vh-120px)] overflow-y-scroll max-h-[calc(100vh-120px)]'>

@@ -3,7 +3,7 @@ const productModel = require("../../models/productModel")
 const getBrandProduct = async (req, res) => {
     try {
         const productBrand = await productModel.distinct("brandName")
-        console.log("brandName: ", productBrand)
+
 
         //array to store one product from each Brand
         const productByBrand = []
