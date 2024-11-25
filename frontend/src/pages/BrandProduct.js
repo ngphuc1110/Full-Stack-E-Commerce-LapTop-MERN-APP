@@ -27,8 +27,6 @@ const BrandProduct = () => {
     })
 
 
-
-
     const [selectBrand, setSelectBrand] = useState(urlCategoryListObject)
     const [selectChipSet, setSelectChipSet] = useState({})
     const [selectGPU, setselectGPU] = useState({})
