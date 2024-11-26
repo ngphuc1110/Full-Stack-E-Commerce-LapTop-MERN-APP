@@ -47,6 +47,7 @@ const VerticalProductSearch = ({ loading, data = [] }) => {
                                 </Link>
                                 <div className='p-4 grid gap-3'>
                                     <h2 className='font-semibold text-sm md:text-sm text-ellipsis line-clamp-2 text-black text-center'>{product?.productName}</h2>
+                                    <p>{product?.score}</p>
                                     <div className='flex justify-between mx-5'>
                                         <div className='py-2'>
                                             <p className='text-slate-400 line-through'>{currencyFormat(product?.price)}</p>

@@ -6,6 +6,7 @@ import productGPU from '../helper/productGPU'
 import OtherProductDisplay from '../components/OtherProductDisplay'
 import VerticalProductSearch from '../components/VerticalProductSearch'
 import SummaryApi from '../common'
+import productRam from '../helper/productRam'
 
 const BrandProduct = () => {
     const params = useParams()
@@ -34,6 +35,7 @@ const BrandProduct = () => {
     const [filterChipSetList, setFilterChipSetList] = useState([])
     const [filterGPUList, setFilterGPUList] = useState([])
     const [sortBy, setSortBy] = useState("")
+    const [recommend, SetRecommend] = useState("")
 
 
     const fetchData = async () => {
@@ -50,7 +52,32 @@ const BrandProduct = () => {
         })
 
         const dataResponse = await response.json()
-        setData(dataResponse?.data || [])
+
+        const calculateProductScore = (product) => {
+            let score = 0;
+
+
+            const gpuScore = productGPU.find((gpu) => gpu.value === product.gpu)?.score || 0;
+            score += gpuScore;
+
+
+            const ramScore = productRam.find((ram) => ram.value === product.ram)?.score || 0;
+            score += ramScore;
+
+            return score;
+        };
+
+        const productsWithScores = dataResponse?.data.map((product) => {
+            const score = calculateProductScore(product);
+            return {
+                ...product,
+                score: score,
+            };
+        });
+
+        console.log("productsWithScores", productsWithScores)
+
+        setData(productsWithScores || [])
 
     }
     const handleSelectBrand = (e) => {
@@ -91,7 +118,7 @@ const BrandProduct = () => {
     useEffect(() => {
         fetchData()
 
-    }, [filterCategoryList])
+    }, [filterCategoryList, filterChipSetList, filterGPUList])
 
     useEffect(() => {
         const arrayOfBrand = Object.keys(selectBrand).map(brandKeyName => {
@@ -137,16 +164,37 @@ const BrandProduct = () => {
         const { value } = e.target
         setSortBy(value)
         if (value === 'asc') {
-            setData(preve => preve.sort((a, b) => a.sellingPrice - b.sellingPrice))
+            setData((preve) => [...preve].sort((a, b) => a.sellingPrice - b.sellingPrice))
         }
         if (value === 'dsc') {
-            setData(preve => preve.sort((a, b) => b.sellingPrice - a.sellingPrice))
+            setData((preve) => [...preve].sort((a, b) => b.sellingPrice - a.sellingPrice))
         }
     }
 
+    // const handleOnClickRecommend = (value) => {
+    //     SetRecommend(value)
+    //     if (value === 'dsc') {
+    //         setData((preve) => [...preve].sort((a, b) => b.score - a.score));
+    //     }
+    // }
+
+    const handleOnClickRecommend = (value) => {
+        SetRecommend(value);
+        if (value === 'dsc') {
+            setData((preve) =>
+                [...preve].sort((a, b) => {
+                    if (b.score === a.score) {
+                        return a.sellingPrice - b.sellingPrice; // Sản phẩm nào rẻ hơn sẽ đứng trước
+                    }
+                    return b.score - a.score; // Sắp xếp giảm dần theo score
+                })
+            );
+        }
+    };
+
     // useEffect(() => {
 
-    // }, [sortBy])
+    // }, [recommend])
 
     return (
         <div className='container mx-auto p-4 '>
@@ -224,8 +272,11 @@ const BrandProduct = () => {
                 </div>
                 {/* Display Product  */}
                 <div className='px-10'>
-                    <p className='font-medium text-slate-400 text-lg my-2 '>Search Results: {data.length}</p>
-                    <div className='min-h-[calc(100vh-120px)] overflow-y-scroll max-h-[calc(100vh-120px)]'>
+                    <div className='flex justify-between'>
+                        <p className='font-medium text-slate-400 text-lg my-2 '>Search Results: {data.length}</p>
+                        <button className='rounded-full bg-red-500 p-2 px-3 text-white hover:bg-red-700' onClick={() => handleOnClickRecommend('dsc')}>Recommend</button>
+                    </div>
+                    <div className='min-h-[calc(100vh-120px)] overflow-y-scroll max-h-[calc(100vh-120px)] my-2'>
                         {
                             data.length !== 0 && (
                                 <VerticalProductSearch data={data} loading={loading} />

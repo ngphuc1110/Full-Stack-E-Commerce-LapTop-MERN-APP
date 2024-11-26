@@ -21,16 +21,16 @@ const filterProductController = async (req, res) => {
             query.gpu = { $in: GPUList };
         }
 
-        const product = await productModel.find(query)
+        const products = await productModel.find(query)
 
         // brandName: {
         //     "$in": brandNameList
         // }
-        console.log(product)
+        //const test
 
         res.json({
-            data: product,
-            message: "product",
+            data: products,
+            message: "products",
             success: true,
             error: false,
 
