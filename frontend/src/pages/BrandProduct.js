@@ -200,7 +200,7 @@ const BrandProduct = () => {
 
 
     return (
-        <div className='container mx-auto p-4 '>
+        <div className='container mx-auto p-4 min-h-[570px]'>
             <div className='hidden lg:grid grid-cols-[250px,1fr]'>
                 {/* left side */}
                 <div className='bg-white p-2 min-h-[calc(100vh-120px)] overflow-y-scroll max-h-[calc(100vh-120px)]'>

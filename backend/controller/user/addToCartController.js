@@ -5,11 +5,17 @@ const addToCartController = async (req, res) => {
         const { productId } = req?.body
         const currentUser = req.userId
 
-        const isProductAvailable = await addToCartModel.findOne({ productId })
+        // const isProductAvailable = await addToCartModel.findOne({ productId })
+        // const isUserAvailable = await addToCartModel.findOne({ currentUser })
 
-        console.log("isProductAvailable", isProductAvailable)
+        const existingCartItem = await addToCartModel.findOne({
+            productId,
+            userId: currentUser,
+        });
 
-        if (isProductAvailable) {
+        //console.log("isProductAvailable", isProductAvailable)
+
+        if (existingCartItem) {
             return res.json({
                 message: "Product Already in Cart!",
                 success: false,
