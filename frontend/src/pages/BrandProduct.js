@@ -7,6 +7,9 @@ import OtherProductDisplay from '../components/OtherProductDisplay'
 import VerticalProductSearch from '../components/VerticalProductSearch'
 import SummaryApi from '../common'
 import productRam from '../helper/productRam'
+import RecommendProduct from '../components/RecommendProduct'
+import productScreen from '../helper/productScreen'
+import productStorage from '../helper/productStorage'
 
 const BrandProduct = () => {
     const params = useParams()
@@ -61,8 +64,17 @@ const BrandProduct = () => {
             score += gpuScore;
 
 
+            const chipSetScore = productChipSet.find((chipSet) => chipSet.value === product.chipSet)?.score || 0;
+            score += chipSetScore;
+
+            const screenScore = productScreen.find((screen) => screen.value === product.screen)?.score || 0;
+            score += screenScore;
+
             const ramScore = productRam.find((ram) => ram.value === product.ram)?.score || 0;
             score += ramScore;
+
+            const storageScore = productStorage.find((storage) => storage.value === product.storage)?.score || 0;
+            score += storageScore;
 
             return score;
         };
@@ -117,7 +129,7 @@ const BrandProduct = () => {
 
     useEffect(() => {
         fetchData()
-
+        SetRecommend("")
     }, [filterCategoryList, filterChipSetList, filterGPUList])
 
     useEffect(() => {
@@ -171,12 +183,6 @@ const BrandProduct = () => {
         }
     }
 
-    // const handleOnClickRecommend = (value) => {
-    //     SetRecommend(value)
-    //     if (value === 'dsc') {
-    //         setData((preve) => [...preve].sort((a, b) => b.score - a.score));
-    //     }
-    // }
 
     const handleOnClickRecommend = (value) => {
         SetRecommend(value);
@@ -192,9 +198,6 @@ const BrandProduct = () => {
         }
     };
 
-    // useEffect(() => {
-
-    // }, [recommend])
 
     return (
         <div className='container mx-auto p-4 '>
@@ -274,12 +277,13 @@ const BrandProduct = () => {
                 <div className='px-10'>
                     <div className='flex justify-between'>
                         <p className='font-medium text-slate-400 text-lg my-2 '>Search Results: {data.length}</p>
-                        <button className='rounded-full bg-red-500 p-2 px-3 text-white hover:bg-red-700' onClick={() => handleOnClickRecommend('dsc')}>Recommend</button>
+                        <button className='rounded-full bg-red-500 p-2 px-3 text-white hover:bg-red-700' onClick={() => handleOnClickRecommend('dsc')}>Recommendation</button>
                     </div>
                     <div className='min-h-[calc(100vh-120px)] overflow-y-scroll max-h-[calc(100vh-120px)] my-2'>
                         {
                             data.length !== 0 && (
-                                <VerticalProductSearch data={data} loading={loading} />
+                                recommend ? (<RecommendProduct data={data} loading={loading} />) : (<VerticalProductSearch data={data} loading={loading} />)
+
 
                             )
                         }
