@@ -1,84 +1,88 @@
-const backendDomin = "http://localhost:8080"
+const backendDomain = "http://localhost:8080"
 
 const SummaryApi = {
     signUp: {
-        url: `${backendDomin}/api/signup`,
+        url: `${backendDomain}/api/signup`,
         method: "post"
     },
     signIn: {
-        url: `${backendDomin}/api/signin`,
+        url: `${backendDomain}/api/signin`,
         method: "post"
     },
     current_user: {
-        url: `${backendDomin}/api/user-detail`,
+        url: `${backendDomain}/api/user-detail`,
         method: "get"
     },
     logout_user: {
-        url: `${backendDomin}/api/logout`,
+        url: `${backendDomain}/api/logout`,
         method: "get"
     },
     all_users: {
-        url: `${backendDomin}/api/all-users`,
+        url: `${backendDomain}/api/all-users`,
         method: "get"
     },
     update_user: {
-        url: `${backendDomin}/api/update-user`,
+        url: `${backendDomain}/api/update-user`,
         method: "post"
     },
     remove_user: {
-        url: `${backendDomin}/api/remove-user`,
+        url: `${backendDomain}/api/remove-user`,
         method: "post"
     },
     uploadProduct: {
-        url: `${backendDomin}/api/upload-product`,
+        url: `${backendDomain}/api/upload-product`,
         method: "post"
     },
     allProduct: {
-        url: `${backendDomin}/api/get-product`,
+        url: `${backendDomain}/api/get-product`,
         method: "get"
     },
     updateProduct: {
-        url: `${backendDomin}/api/update-product`,
+        url: `${backendDomain}/api/update-product`,
         method: "post"
     },
     productBrand: {
-        url: `${backendDomin}/api/get-productBrand`,
+        url: `${backendDomain}/api/get-productBrand`,
         method: "get"
     },
     brandWiseProduct: {
-        url: `${backendDomin}/api/brand-product`,
+        url: `${backendDomain}/api/brand-product`,
         method: "post"
     },
     productDetails: {
-        url: `${backendDomin}/api/product-details`,
+        url: `${backendDomain}/api/product-details`,
         method: "post"
     },
     addToCart: {
-        url: `${backendDomin}/api/add-to-cart`,
+        url: `${backendDomain}/api/add-to-cart`,
         method: "post"
     },
     addToCartProductCount: {
-        url: `${backendDomin}/api/count-add-to-cart-products`,
+        url: `${backendDomain}/api/count-add-to-cart-products`,
         method: "get"
     },
     viewCartProduct: {
-        url: `${backendDomin}/api/view-cart-products`,
+        url: `${backendDomain}/api/view-cart-products`,
         method: "get"
     },
     updateCartProduct: {
-        url: `${backendDomin}/api/update-cart-products`,
+        url: `${backendDomain}/api/update-cart-products`,
         method: "post"
     },
     deleteCartProduct: {
-        url: `${backendDomin}/api/delete-cart-products`,
+        url: `${backendDomain}/api/delete-cart-products`,
         method: "post"
     },
     searchProduct: {
-        url: `${backendDomin}/api/search-product`,
+        url: `${backendDomain}/api/search-product`,
         method: "get"
     },
     filterProduct: {
-        url: `${backendDomin}/api/filter-product`,
+        url: `${backendDomain}/api/filter-product`,
+        method: "post"
+    },
+    payment: {
+        url: `${backendDomain}/api/checkout`,
         method: "post"
     },
 }

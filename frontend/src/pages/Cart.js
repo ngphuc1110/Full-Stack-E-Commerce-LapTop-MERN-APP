@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { loadStripe } from '@stripe/stripe-js';
 import SummaryApi from '../common'
 import Context from '../context'
 import currencyFormat from '../helper/currencyFormat'
@@ -11,7 +12,7 @@ const Cart = () => {
     const context = useContext(Context)
     const loadingCart = new Array(context.cartProductCount).fill(null)
     const fetchData = async () => {
-        //setLoading(true)
+
         const response = await fetch(SummaryApi.viewCartProduct.url, {
             method: SummaryApi.viewCartProduct.method,
             credentials: "include",
@@ -19,7 +20,6 @@ const Cart = () => {
                 "content-type": "application/json"
             },
         })
-        setLoading(false)
         const responseData = await response.json()
 
         if (responseData.success) {
@@ -29,8 +29,13 @@ const Cart = () => {
     }
     console.log("Cart", data)
 
+    const handleLoading = async () => {
+        await fetchData()
+    }
     useEffect(() => {
-        fetchData()
+        setLoading(true)
+        handleLoading()
+        setLoading(false)
     }, [])
 
     const increaseQuantity = async (id, qty) => {
@@ -95,6 +100,27 @@ const Cart = () => {
         }
     }
 
+    const handlePayment = async () => {
+
+        const stripePromise = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+        const response = await fetch(SummaryApi.payment.url, {
+            method: SummaryApi.payment.method,
+            credentials: "include",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({ cartItems: data })
+        })
+        const responseData = await response.json()
+
+
+        console.log("responseData.id", responseData.id)
+        if (responseData?.id) {
+            stripePromise.redirectToCheckout({ sessionId: responseData.id })
+        }
+        console.log("Payment Response: ", responseData)
+    }
+
     const totalQuantity = data.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0)
     const totalPrice = data.reduce((preve, curr) => preve + (curr.quantity * curr.productId.sellingPrice), 0)
     return (
@@ -102,7 +128,7 @@ const Cart = () => {
             <div className='text-center text-lg py-2 my-3 '>
                 {
                     data.length === 0 && !loading && (
-                        <p className='bg-white py-7 '>No Data</p>
+                        <p className='bg-white py-7 '>No Product In Cart</p>
                     )
                 }
             </div>
@@ -112,9 +138,9 @@ const Cart = () => {
                 <div className='w-full max-w-4xl px-6'>
                     {
                         loading ? (
-                            loadingCart.map(el => {
+                            loadingCart.map((el, index) => {
                                 return (
-                                    <div key={el + "Add to cart Loading"} className='w-full bg-slate-300 h-32 my-4 border border-slate-300 animate-pulse rounded'></div>
+                                    <div key={el + "Add to cart Loading" + index} className='w-full bg-slate-300 h-32 border border-slate-300 animate-pulse rounded grid grid-cols-[128px,1fr] my-3 mx-8 '></div>
                                 )
                             })
 
@@ -151,26 +177,31 @@ const Cart = () => {
                     }
                 </div>
                 {/* Summary */}
-                <div className='mt-5 lg:mt-0 w-full mr-12 max-w-md'>
-                    {
-                        loading ? (<div className='h-36 bg-slate-300 border-slate-300 animate-pulse'>
+                {
+                    data[0] && (
+                        <div className='mt-5 lg:mt-0 w-full mr-12 max-w-md'>
+                            {
+                                loading ? (<div className='h-36 bg-slate-300 border-slate-300 animate-pulse'>
 
-                        </div>) : (<div className='h-36 bg-white'>
-                            <h2 className='text-white bg-red-600 px-4 py-1'>Summary</h2>
-                            <div className='flex items-center justify-between px-4 py-2 gap-2 font-medium text-lg text-slate-600'>
-                                <p>Quantity:</p>
-                                <p> {totalQuantity} </p>
-                            </div>
-                            <div className='flex items-center justify-between px-4 py-2 gap-2 font-medium text-lg text-slate-600'>
-                                <p>Total Price:</p>
-                                <p> {currencyFormat(totalPrice)}</p>
-                            </div>
+                                </div>) : (<div className='h-36 bg-white'>
+                                    <h2 className='text-white bg-red-600 px-4 py-1'>Summary</h2>
+                                    <div className='flex items-center justify-between px-4 py-2 gap-2 font-medium text-lg text-slate-600'>
+                                        <p>Quantity:</p>
+                                        <p> {totalQuantity} </p>
+                                    </div>
+                                    <div className='flex items-center justify-between px-4 py-2 gap-2 font-medium text-lg text-slate-600'>
+                                        <p>Total Price:</p>
+                                        <p> {currencyFormat(totalPrice)}</p>
+                                    </div>
 
-                            <button className='bg-blue-600 p-4 text-white w-full hover:bg-blue-800 cursor-pointer'>Payment</button>
+                                    <button className='bg-blue-600 p-4 text-white w-full hover:bg-blue-800 cursor-pointer' onClick={handlePayment}>Payment</button>
 
-                        </div>)
-                    }
-                </div>
+                                </div>)
+                            }
+                        </div>
+                    )
+                }
+
 
 
             </div>

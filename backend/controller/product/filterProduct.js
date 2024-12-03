@@ -23,11 +23,6 @@ const filterProductController = async (req, res) => {
 
         const products = await productModel.find(query)
 
-        // brandName: {
-        //     "$in": brandNameList
-        // }
-        //const test
-
         res.json({
             data: products,
             message: "products",

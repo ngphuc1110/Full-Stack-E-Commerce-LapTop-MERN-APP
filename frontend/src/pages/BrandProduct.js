@@ -20,7 +20,8 @@ const BrandProduct = () => {
     const location = useLocation()
     const urlSearch = new URLSearchParams(location.search)
     const urlCategoryListinArray = urlSearch.getAll("brand")
-    //const urlCategoryListinArray2 = urlSearch.getAll("cpu")
+    // const urlCategoryListinArray2 = urlSearch.getAll("cpu")
+    // console.log("urlCategoryListinArrayCPU", urlCategoryListinArray2)
     // const urlCategoryListinArray = [
     //     ...urlCategoryListinArray1,
     //     ...urlCategoryListinArray2
@@ -32,6 +33,7 @@ const BrandProduct = () => {
 
 
     const [selectBrand, setSelectBrand] = useState(urlCategoryListObject)
+    console.log("selectBrand", selectBrand)
     const [selectChipSet, setSelectChipSet] = useState({})
     const [selectGPU, setselectGPU] = useState({})
     const [filterCategoryList, setFilterCategoryList] = useState([])
@@ -55,6 +57,8 @@ const BrandProduct = () => {
         })
 
         const dataResponse = await response.json()
+
+        console.log("dataResponse", dataResponse)
 
         const calculateProductScore = (product) => {
             let score = 0;
@@ -93,7 +97,7 @@ const BrandProduct = () => {
 
     }
     const handleSelectBrand = (e) => {
-        const { name, value, checked } = e.target
+        const { value, checked } = e.target
 
         setSelectBrand((preve) => {
             return {
@@ -104,7 +108,7 @@ const BrandProduct = () => {
     }
 
     const handleSelectChipSet = (e) => {
-        const { name, value, checked } = e.target
+        const { value, checked } = e.target
 
         setSelectChipSet((preve) => {
             return {
@@ -116,7 +120,7 @@ const BrandProduct = () => {
     }
 
     const handleSelectGPU = (e) => {
-        const { name, value, checked } = e.target
+        const { value, checked } = e.target
 
         setselectGPU((preve) => {
             return {
