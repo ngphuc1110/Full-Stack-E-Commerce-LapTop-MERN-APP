@@ -4,11 +4,13 @@ const filterProductController = async (req, res) => {
     try {
 
         const brandNameList = req?.body?.brandName || []
-        console.log("brandNameList", brandNameList)
         const chipSetList = req?.body?.chipSet || []
-        console.log("chipSetList", chipSetList)
         const GPUList = req?.body?.gpu || []
-        console.log("GPUList", GPUList)
+        const ramList = req?.body?.ram || []
+        const screenList = req?.body?.screen || []
+        const storageList = req?.body?.storage || []
+        const osList = req?.body?.os || []
+        const weightList = req?.body?.weight || []
 
         const query = {};
         if (brandNameList.length > 0) {
@@ -19,6 +21,21 @@ const filterProductController = async (req, res) => {
         }
         if (GPUList.length > 0) {
             query.gpu = { $in: GPUList };
+        }
+        if (ramList.length > 0) {
+            query.ram = { $in: ramList };
+        }
+        if (screenList.length > 0) {
+            query.screen = { $in: screenList };
+        }
+        if (storageList.length > 0) {
+            query.storage = { $in: storageList };
+        }
+        if (osList.length > 0) {
+            query.os = { $in: osList };
+        }
+        if (weightList.length > 0) {
+            query.weight = { $in: weightList };
         }
 
         const products = await productModel.find(query)

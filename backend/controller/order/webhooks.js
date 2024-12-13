@@ -1,18 +1,27 @@
 const stripe = require('../../config/stripe')
 const endpointSecret = process.env.STRIPE_ENDPOINT_WEBHOOK_SECRET_KEY
-const webHook = async (req, res) => {
+const webHooks = async (req, res) => {
     const signature = req.headers['stripe-signature'];
     const payloadString = JSON.stringify(req.body)
     let event;
+
+    const header = stripe.webhooks.generateTestHeaderString({
+        payload: payloadString,
+        secret: endpointSecret
+    })
     try {
         event = stripe.webhooks.constructEvent(
             payloadString,
-            signature,
+            header,
             endpointSecret
         );
     } catch (err) {
-        console.log(`⚠️  Webhook signature verification failed.`, err.message);
-        return response.sendStatus(400);
+        response.sendStatus(400).send(`Webhook Error: ${err.message}`)
+        return;
     }
 
+    response.status(200).send();
+
 }
+
+module.exports = webHooks

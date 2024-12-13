@@ -9,8 +9,7 @@ const productGPU = [
     { id: 8, label: "GeForce RTX™ 3060 6GB", value: "RTX-3060", score: 6 },
     { id: 9, label: "GeForce RTX™ 4050 6GB", value: "RTX-4050", score: 6.5 },
     { id: 10, label: "GeForce RTX™ 4060 8GB ", value: "RTX-4060", score: 7 },
-    { id: 11, label: "GeForce RTX™ 4080 8GB", value: "RTX-4080", score: 8 },
-
+    { id: 11, label: "GeForce RTX™ 4080 8GB", value: "RTX-4080", score: 8 }
 ]
 
 export default productGPU

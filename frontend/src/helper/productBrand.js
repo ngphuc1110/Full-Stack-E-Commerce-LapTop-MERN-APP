@@ -7,6 +7,7 @@ const productBrand = [
     { id: 6, label: "Lenovo", value: "lenovo" },
     { id: 7, label: "LG", value: "lg" },
     { id: 8, label: "Gigabyte", value: "gigabyte" },
+    { id: 9, label: "Apple", value: "apple" },
 ]
 
 export default productBrand
