@@ -6,9 +6,10 @@ import addToCart from '../helper/addToCart'
 import { Link } from 'react-router-dom'
 import { FaStar } from "react-icons/fa";
 
-const RecommendProduct = ({ loading, data = [] }) => {
+const RecommendProduct = ({ loading, data = [], bestProductId }) => {
     const loadingList = new Array(13).fill(null)
-
+    console.log("productId", bestProductId)
+    console.log("data", data)
     const { fetchUserAddToCart } = useContext(Context)
     const handleAddToCart = async (e, id) => {
         await addToCart(e, id)
@@ -44,7 +45,7 @@ const RecommendProduct = ({ loading, data = [] }) => {
                     data.map((product, index) => {
                         return (
                             <div
-                                className={`w-full min-w-[320px] md:min-w-[330px] max-w-[320px] md:max-w-[350px] bg-white rounded-sm shadow ${index === 0 ? 'border-4 border-red-500' : ''
+                                className={`w-full min-w-[320px] md:min-w-[330px] max-w-[320px] md:max-w-[350px] bg-white rounded-sm shadow ${product?._id === bestProductId ? 'border-4 border-red-500' : ''
                                     }`}
                                 onClick={scrollTop}
                                 key={product?._id}

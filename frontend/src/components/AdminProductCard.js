@@ -14,7 +14,7 @@ const AdminProductCard = ({
             <div className='bg-white p-4 rounded '>
                 <div className='fixed-image '>
                     <img src={data?.productImage[0]} width={120} height={120} className='w-fit mx-auto' />
-                    <h1>
+                    <h1 className='min-h-12'>
                         {data.productName}
                     </h1>
 

@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <footer className='bg-slate-300 bottom-0'>
             <div className='container mx-auto p-4 text-center font-bold'>
-                https://www.LaptopStore.com
+                Nguyen Gia Phuc - ITITIU19041
             </div>
         </footer>
     )

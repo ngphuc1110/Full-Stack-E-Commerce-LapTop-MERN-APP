@@ -6,6 +6,7 @@ import { FaAngleLeft } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import addToCart from '../helper/addToCart';
 import Context from '../context';
+import scrollTop from '../helper/scrollTop';
 
 const VerticalCartProduct = ({ brandName, heading }) => {
     const [data, setData] = useState([])
@@ -72,11 +73,11 @@ const VerticalCartProduct = ({ brandName, heading }) => {
                         data.map((product, index) => {
                             return (
                                 <Link to={"/product/" + product?._id} className='w-full min-w-[320px] md:min-w-[350px] max-w-[320px] md:max-w-[350px] bg-white rounded-sm shadow '>
-                                    <div className='bg-slate-200 h-60 p-4 min-w-[120px] md:min-w-[145px] flex justify-center items-center'>
+                                    <div className='bg-slate-200 h-60 p-4 min-w-[120px] md:min-w-[145px] flex justify-center items-center' onClick={scrollTop}>
                                         <img src={product.productImage[0]} className='object-scale-down h-full mix-blend-multiply hover:scale-105 transition-all' />
                                     </div>
                                     <div className='p-4 grid gap-3'>
-                                        <h2 className='font-semibold text-sm md:text-sm text-ellipsis line-clamp-2 text-black text-center'>{product?.productName}</h2>
+                                        <h2 className='font-semibold text-sm md:text-sm text-ellipsis line-clamp-2 text-black text-center min-h-10'>{product?.productName}</h2>
                                         <div className='flex justify-between mx-5'>
                                             <div className='py-2'>
                                                 <p className='text-slate-400 line-through'>{currencyFormat(product?.price)}</p>

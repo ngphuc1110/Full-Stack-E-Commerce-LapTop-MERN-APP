@@ -14,6 +14,7 @@ import productStorage from '../helper/productStorage';
 import productScreen from '../helper/productScreen';
 import productOs from '../helper/productOs';
 import productWeight from '../helper/productWeight';
+import productBattery from '../helper/productBattery';
 
 const UploadProduct = ({
     onClose,
@@ -30,7 +31,10 @@ const UploadProduct = ({
         storage: "",
         description: "",
         price: "",
+        battery: "",
         sellingPrice: "",
+        os: "",
+        weight: "",
     })
     const [openFullScreenImage, setOpenFullScreenImage] = useState(false)
     const [fullScreenImage, setFullScreenImage] = useState("")
@@ -246,8 +250,20 @@ const UploadProduct = ({
                         }
                     </select>
 
+                    <label htmlFor='battery' className='mt-3'>Battery: </label>
+                    <select value={data.battery} required name='battery' onChange={handleOnChage} className='p-2 bg-slate-100 border rounded' >
+                        <option value={""}>Select Battery</option>
+                        {
+                            productBattery.map((el, index) => {
+                                return (
+                                    <option value={el.value} key={el.value + index}>{el.label}</option>
+                                )
+                            })
+                        }
+                    </select>
+
                     <label htmlFor='os' className='mt-3'>Operating System: </label>
-                    <select value={data.screen} required name='os' onChange={handleOnChage} className='p-2 bg-slate-100 border rounded' >
+                    <select value={data.os} required name='os' onChange={handleOnChage} className='p-2 bg-slate-100 border rounded' >
                         <option value={""}>Select OS</option>
                         {
                             productOs.map((el, index) => {
@@ -259,7 +275,7 @@ const UploadProduct = ({
                     </select>
 
                     <label htmlFor='weight' className='mt-3'>Weight: </label>
-                    <select value={data.screen} required name='weight' onChange={handleOnChage} className='p-2 bg-slate-100 border rounded' >
+                    <select value={data.weight} required name='weight' onChange={handleOnChage} className='p-2 bg-slate-100 border rounded' >
                         <option value={""}>Select Weight</option>
                         {
                             productWeight.map((el, index) => {

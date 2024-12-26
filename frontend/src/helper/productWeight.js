@@ -1,6 +1,7 @@
 const productWeight = [
-    { id: 1, label: "1.3 KG", value: "1.3", score: 3 },
-    { id: 2, label: "1.5 KG", value: "1.5", score: 2.9 },
+    { id: 11, label: "1.24 KG", value: "1.24", score: 3.3 },
+    { id: 1, label: "1.5 KG", value: "1.5", score: 3 },
+    { id: 2, label: "1.6 KG", value: "1.6", score: 2.9 },
     { id: 3, label: "2.5 KG", value: "2.5", score: 2.6 },
     { id: 4, label: "2.6 KG", value: "2.6", score: 2.4 },
     { id: 5, label: "2.7 KG", value: "2.7", score: 2.2 },

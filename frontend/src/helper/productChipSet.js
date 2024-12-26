@@ -7,7 +7,7 @@ const productChipSet = [
     { id: 6, label: "Intel I5-1334U", value: "I5-1334U", score: 1.5 },
     { id: 7, label: "Intel I5-1335U", value: "I5-1335U", score: 1.7 },
     { id: 8, label: "Intel I5-1340P", value: "I5-1340P", score: 1.9 },
-    { id: 9, label: "Intel Ultra 5-125U", value: "Ultra 5-125U" },
+    { id: 9, label: "Intel Ultra 5-125U", value: "Ultra 5-125U", score: 2 },
     { id: 10, label: "Intel I7-12700H", value: "I7-12700H", score: 2 },
     { id: 11, label: "Intel I7-13620H", value: "I7-13620H", score: 2.5 },
     { id: 12, label: "Intel I7-13650HX", value: "I7-13650HX", score: 2.8 },
@@ -22,9 +22,9 @@ const productChipSet = [
     { id: 21, label: "Ryzen 5-5600H", value: "R5-5600H", score: 2 },
     { id: 22, label: "Ryzen 7-7730U", value: "R7-7730U", score: 2.8 },
     { id: 23, label: "Ryzen R-AI 9 HX 370", value: "R-AI 9 HX 370", score: 4 },
-    { id: 24, label: "Apple M2 Pro", value: "Apple M2 Pro", score: 2 },
-    { id: 24, label: "Apple M3 Pro", value: "Apple M3 Pro", score: 2.5 },
-    { id: 24, label: "Apple M4 Pro", value: "Apple M4 Pro", score: 3 },
+    { id: 24, label: "Apple M2 ", value: "Apple M2 ", score: 2 },
+    { id: 25, label: "Apple M3 ", value: "Apple M3 ", score: 2.5 },
+    { id: 26, label: "Apple M4 ", value: "Apple M4 ", score: 3 },
 ]
 
 export default productChipSet

@@ -46,7 +46,7 @@ const VerticalProductSearch = ({ loading, data = [] }) => {
                                     <img src={product.productImage[0]} className='object-scale-down h-full mix-blend-multiply hover:scale-105 transition-all' />
                                 </Link>
                                 <div className='p-4 grid gap-3'>
-                                    <h2 className='font-semibold text-sm md:text-sm text-ellipsis line-clamp-2 text-black text-center'>{product?.productName}</h2>
+                                    <h2 className='font-semibold text-sm md:text-sm text-ellipsis line-clamp-2 text-black text-center min-h-10'>{product?.productName}</h2>
                                     <div className='flex justify-between mx-5'>
                                         <div className='py-2'>
                                             <p className='text-slate-400 line-through'>{currencyFormat(product?.price)}</p>

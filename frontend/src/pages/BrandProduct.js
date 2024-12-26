@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import productBrand from '../helper/productBrand'
 import productChipSet from '../helper/productChipSet'
 import productGPU from '../helper/productGPU'
-import OtherProductDisplay from '../components/OtherProductDisplay'
 import VerticalProductSearch from '../components/VerticalProductSearch'
 import SummaryApi from '../common'
 import productRam from '../helper/productRam'
@@ -12,6 +11,8 @@ import productScreen from '../helper/productScreen'
 import productStorage from '../helper/productStorage'
 import productOs from '../helper/productOs'
 import productWeight from '../helper/productWeight'
+import productBattery from '../helper/productBattery'
+import ProductScorer from '../components/ProductScorer'
 
 const BrandProduct = () => {
     const params = useParams()
@@ -22,16 +23,12 @@ const BrandProduct = () => {
     const location = useLocation()
     const urlSearch = new URLSearchParams(location.search)
     const urlCategoryListinArray = urlSearch.getAll("brand")
-    // const urlCategoryListinArray2 = urlSearch.getAll("cpu")
-    // console.log("urlCategoryListinArrayCPU", urlCategoryListinArray2)
-    // const urlCategoryListinArray = [
-    //     ...urlCategoryListinArray1,
-    //     ...urlCategoryListinArray2
-    // ]
-    const urlCategoryListObject = {}
+    let urlCategoryListObject = {}
     urlCategoryListinArray.forEach(el => {
         urlCategoryListObject[el] = true
     })
+
+
 
 
     const [selectBrand, setSelectBrand] = useState(urlCategoryListObject)
@@ -42,6 +39,7 @@ const BrandProduct = () => {
     const [selectScreen, setselectScreen] = useState({})
     const [selectOs, setselectOs] = useState({})
     const [selectWeight, setselectWeight] = useState({})
+    const [selectBattery, setselectBattery] = useState({})
 
     const [filterCategoryList, setFilterCategoryList] = useState([])
     const [filterChipSetList, setFilterChipSetList] = useState([])
@@ -51,10 +49,11 @@ const BrandProduct = () => {
     const [filterScreenList, setFilterScreenList] = useState([])
     const [filterOsList, setFilterOsList] = useState([])
     const [filterWeightList, setFilterWeightList] = useState([])
-
+    const [filterBatteryList, setFilterBatteryList] = useState([])
 
     const [sortBy, setSortBy] = useState("")
     const [recommend, SetRecommend] = useState("")
+    const [bestProduct, setBestProduct] = useState({})
 
 
     const fetchData = async () => {
@@ -72,43 +71,14 @@ const BrandProduct = () => {
                 screen: filterScreenList,
                 os: filterOsList,
                 weight: filterWeightList,
-
+                battery: filterBatteryList
             })
         })
 
         const dataResponse = await response.json()
 
-        console.log("dataResponse", dataResponse)
-
-        const calculateProductScore = (product) => {
-            let score = 0;
-
-            const gpuScore = productGPU.find((gpu) => gpu.value === product.gpu)?.score || 0;
-            score += gpuScore;
-
-            const chipSetScore = productChipSet.find((chipSet) => chipSet.value === product.chipSet)?.score || 0;
-            score += chipSetScore;
-
-            const screenScore = productScreen.find((screen) => screen.value === product.screen)?.score || 0;
-            score += screenScore;
-
-            const ramScore = productRam.find((ram) => ram.value === product.ram)?.score || 0;
-            score += ramScore;
-
-            const storageScore = productStorage.find((storage) => storage.value === product.storage)?.score || 0;
-            score += storageScore;
-
-            // const osScore = productStorage.find((os) => os.value === product.os)?.score || 0;
-            // score += osScore;
-
-            // const weightScore = productStorage.find((weight) => weight.value === product.weight)?.score || 0;
-            // score += weightScore;
-
-            return score;
-        };
-
         const productsWithScores = dataResponse?.data.map((product) => {
-            const score = calculateProductScore(product);
+            const score = ProductScorer(product);
             return {
                 ...product,
                 score: score,
@@ -209,11 +179,25 @@ const BrandProduct = () => {
         })
     }
 
+    const handleSelectBattery = (e) => {
+        const { value, checked } = e.target
+
+        setselectBattery((preve) => {
+            return {
+                ...preve,
+                [value]: checked
+            }
+        })
+    }
 
     useEffect(() => {
-        fetchData()
-        SetRecommend("")
-    }, [filterCategoryList, filterChipSetList, filterGPUList, filterRamList, filterStorageList, filterScreenList, filterOsList, filterWeightList])
+        const timeout = setTimeout(() => {
+            fetchData();
+            SetRecommend("");
+        }, 100);
+        return () => clearTimeout(timeout);
+    }, [filterCategoryList, filterChipSetList, filterGPUList, filterRamList, filterStorageList, filterScreenList, filterOsList, filterWeightList, filterBatteryList]);
+
 
     useEffect(() => {
         const arrayOfBrand = Object.keys(selectBrand).map(brandKeyName => {
@@ -280,6 +264,14 @@ const BrandProduct = () => {
             return null
         }).filter(el => el)
 
+        const arrayOfBattery = Object.keys(selectBattery).map(BatteryKeyName => {
+
+            if (selectBattery[BatteryKeyName]) {
+                return BatteryKeyName
+            }
+            return null
+        }).filter(el => el)
+
         setFilterCategoryList(arrayOfBrand)
         setFilterChipSetList(arrayOfCPU)
         setFilterGPUList(arrayOfGPU)
@@ -288,6 +280,7 @@ const BrandProduct = () => {
         setFilterScreenList(arrayOfScreen)
         setFilterStorageList(arrayOfStorage)
         setFilterWeightList(arrayOfWeight)
+        setFilterBatteryList(arrayOfBattery)
 
         //format for url change when change on the chexbox
         const urlFormat = arrayOfBrand.map((el, index) => {
@@ -297,16 +290,15 @@ const BrandProduct = () => {
             return `brand=${el}&&`
         })
         navigate("/category-product/?" + urlFormat.join(""))
-    }, [selectBrand, selectChipSet, selectGPU, selectWeight, selectStorage, selectScreen, selectOs, selectRam])
+    }, [selectBrand, selectChipSet, selectGPU, selectWeight, selectStorage, selectScreen, selectOs, selectRam, selectBattery])
 
-    const handleOnChangeSortBy = (e) => {
-        const { value } = e.target
+    const handleOnChangeSortBy = (value) => {
         setSortBy(value)
         if (value === 'asc') {
-            setData((preve) => [...preve].sort((a, b) => a.sellingPrice - b.sellingPrice))
+            setData((preve) => [...preve].sort((a, b) => { return a.sellingPrice - b.sellingPrice }))
         }
         if (value === 'dsc') {
-            setData((preve) => [...preve].sort((a, b) => b.sellingPrice - a.sellingPrice))
+            setData((preve) => [...preve].sort((a, b) => { return b.sellingPrice - a.sellingPrice }))
         }
     }
 
@@ -314,18 +306,35 @@ const BrandProduct = () => {
     const handleOnClickRecommend = (value) => {
         SetRecommend(value);
         if (value === 'dsc') {
-            setData((preve) => [...preve].sort((a, b) => {
+            const sortedData = [...data].sort((a, b) => {
                 if (b.score === a.score) {
                     if (b.sellingPrice === a.sellingPrice) {
-                        return b.price - a.price; // sản phẩm discount nhiều hơn sẽ được đứng trước
+                        return b.price - a.price;
                     }
-                    return a.sellingPrice - b.sellingPrice; // Sản phẩm nào rẻ hơn sẽ đứng trước
+                    return a.sellingPrice - b.sellingPrice;
                 }
-                return b.score - a.score; // Sắp xếp giảm dần theo score
-            })
-            );
+                return b.score - a.score;
+            });
+
+            setData(sortedData);
+            setBestProduct(sortedData[0])
         }
     };
+
+    const handleOnClick = () => {
+        setSelectBrand("");
+        setSelectChipSet("");
+        setselectGPU("");
+        setselectRam("");
+        setselectStorage("");
+        setselectScreen("");
+        setselectOs("");
+        setselectWeight("");
+        setselectBattery("");
+    }
+
+    useEffect(() => {
+    }, [bestProduct]);
 
 
     return (
@@ -337,28 +346,28 @@ const BrandProduct = () => {
                     {/* Sort By */}
                     <div className=' '>
                         <h3 className='text-lg uppercase font-medium text-slate-500 border-b bp-2 border-slate-500'>Sort by</h3>
-                        <form className='text-sm flex flex-col gap-2 py-2'>
+                        <div className='text-sm flex flex-col gap-2 py-2'>
                             <div className='flex items-center gap-3'>
-                                <input type='radio' name='sortBy' checked={sortBy === 'asc'} value={"asc"} onChange={handleOnChangeSortBy} />
-                                <label>Price - Low to High</label>
+                                <button className='rounded-full bg-red-500 p-2 px-3 text-white hover:bg-red-700' onClick={() => handleOnChangeSortBy('asc')}>Price - Low to High</button>
                             </div>
                             <div className='flex items-center gap-3'>
-                                <input type='radio' name='sortBy' checked={sortBy === 'dsc'} value={"dsc"} onChange={handleOnChangeSortBy} />
-                                <label>Price - High to Low</label>
+                                <button className='rounded-full bg-red-500 p-2 px-3 text-white hover:bg-red-700' onClick={() => handleOnChangeSortBy('dsc')} >Price - High to Low</button>
+
                             </div>
-                        </form>
+                        </div>
                     </div>
 
                     {/* Filter By */}
                     <div className=' '>
                         <h3 className='text-lg uppercase font-medium text-slate-500 border-b bp-2 border-slate-500 '>Category</h3>
                         <div className=''>
+
                             <h4 className='text-sm uppercase font-sm text-slate-500'>Brand</h4>
                             <form className='text-sm grid-flow-row gap-2 py-2 w-fit'>
                                 {
                                     productBrand.map((brandNameData, index) => {
                                         return (
-                                            <div className='flex items-center gap-3'>
+                                            <div className='flex items-center gap-3' >
                                                 <input type='checkbox' name={"brandName"} checked={selectBrand[brandNameData?.value]}
                                                     value={brandNameData?.value} id={brandNameData?.value}
                                                     key={brandNameData?.id} onChange={handleSelectBrand} />
@@ -376,7 +385,7 @@ const BrandProduct = () => {
                                 {
                                     productChipSet.map((chipSet, index) => {
                                         return (
-                                            <div className='flex items-center gap-3'>
+                                            <div className='flex items-center gap-3' >
                                                 <input type='checkbox' name={"chipSet"} id={chipSet?.value}
                                                     checked={selectChipSet[chipSet?.value]} value={chipSet?.value}
                                                     key={chipSet?.id} onChange={handleSelectChipSet} />
@@ -461,6 +470,24 @@ const BrandProduct = () => {
                         </div>
 
                         <div>
+                            <h4 className='text-sm uppercase font-sm text-slate-500'>Battery</h4>
+                            <form className='text-sm grid-flow-row gap-2 py-2 w-fit'>
+                                {
+                                    productBattery.map((battery, index) => {
+                                        return (
+                                            <div className='flex items-center gap-3'>
+                                                <input type='checkbox' name={"battery"} id={battery?.value}
+                                                    checked={selectBattery[battery?.value]} value={battery?.value}
+                                                    key={battery?.id} onChange={handleSelectBattery} />
+                                                <label htmlFor={battery?.value}>{battery?.label}</label>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </form>
+                        </div>
+
+                        <div>
                             <h4 className='text-sm uppercase font-sm text-slate-500'>OS</h4>
                             <form className='text-sm grid-flow-row gap-2 py-2 w-fit'>
                                 {
@@ -502,12 +529,15 @@ const BrandProduct = () => {
                 <div className='px-10'>
                     <div className='flex justify-between'>
                         <p className='font-medium text-slate-400 text-lg my-2 '>Search Results: {data.length}</p>
-                        <button className='rounded-full bg-red-500 p-2 px-3 text-white hover:bg-red-700' onClick={() => handleOnClickRecommend('dsc')}>Recommendation</button>
+                        <div className=''>
+                            <button className='rounded-full bg-red-500 p-2 px-3 text-white hover:bg-red-700' onClick={() => handleOnClickRecommend('dsc')}>Recommendation</button>
+                            {/* <button className='rounded-full bg-red-500 p-2 px-3 text-white hover:bg-red-700' onClick={() => handleOnClick()}>Clear</button> */}
+                        </div>
                     </div>
                     <div className='min-h-[calc(100vh-120px)] overflow-y-scroll max-h-[calc(100vh-120px)] my-2'>
                         {
                             data.length !== 0 && (
-                                recommend ? (<RecommendProduct data={data} loading={loading} />) : (<VerticalProductSearch data={data} loading={loading} />)
+                                recommend ? (<RecommendProduct data={data} loading={loading} bestProductId={bestProduct?._id} />) : (<VerticalProductSearch data={data} loading={loading} />)
 
 
                             )

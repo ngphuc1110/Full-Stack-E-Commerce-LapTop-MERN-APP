@@ -5,17 +5,15 @@ async function updateUser(req, res) {
 
         const sessionUser = req.userId
 
-        const { userId, name, email, role } = req.body
+        const { userId, name, email, role, address } = req.body
         const payload = {
             ...(name && { name: name }),
             ...(email && { email: email }),
+            ...(address && { address: address }),
             ...(role && { role: role }),
         }
 
         const user = await userModel.findById(sessionUser)
-
-
-
         const updateUser = await userModel.findByIdAndUpdate(userId, payload)
 
         res.json({

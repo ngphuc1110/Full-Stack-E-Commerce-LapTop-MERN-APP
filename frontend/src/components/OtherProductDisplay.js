@@ -5,8 +5,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import addToCart from '../helper/addToCart';
 import Context from '../context';
 import scrollTop from '../helper/scrollTop';
+import SummaryApi from '../common';
+import ProductScorer from './ProductScorer';
 
-const OtherProductDisplay = ({ brandName, heading }) => {
+const OtherProductDisplay = ({ heading, productId }) => {
+
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const loadingList = new Array(13).fill(null)
@@ -20,15 +23,49 @@ const OtherProductDisplay = ({ brandName, heading }) => {
 
     const fetchData = async () => {
         setLoading(true)
-        const brandProduct = await fetchBrandWiseProduct(brandName)
-        setLoading(false)
+        const response = await fetch(SummaryApi.filterProduct.url, {
+            method: SummaryApi.filterProduct.method,
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                brandName: "",
+                chipSet: "",
+                gpu: "",
+                ram: "",
+                storage: "",
+                screen: "",
+                os: "",
+                weight: "",
+                battery: ""
+            })
+        })
 
-        setData(brandProduct?.data)
+        const dataResponse = await response.json()
+
+        const productsWithScores = dataResponse?.data.map((product) => {
+            const score = ProductScorer(product);
+            return {
+                ...product,
+                score: score,
+            };
+        });
+
+        const targetProduct = productsWithScores.find(product => product._id === productId);
+        if (targetProduct) {
+            const targetScore = targetProduct.score;
+
+            const filteredProducts = productsWithScores.filter(product =>
+                product.score >= targetScore - 1 && product.score <= targetScore + 1 && product._id !== productId
+            );
+            setLoading(false)
+            setData(filteredProducts)
+        }
     }
 
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [productId])
 
 
 
@@ -68,7 +105,7 @@ const OtherProductDisplay = ({ brandName, heading }) => {
                                         <img src={product.productImage[0]} className='object-scale-down h-full mix-blend-multiply hover:scale-105 transition-all' />
                                     </Link>
                                     <div className='p-4 grid gap-3'>
-                                        <Link to={"/product/" + product?._id} className='font-semibold text-sm md:text-sm text-ellipsis line-clamp-2 text-black text-center'>{product?.productName}</Link>
+                                        <Link to={"/product/" + product?._id} className='font-semibold text-sm md:text-sm text-ellipsis line-clamp-2 text-black text-center min-h-10'>{product?.productName}</Link>
                                         <div className='flex justify-between mx-5'>
                                             <div className='py-2'>
                                                 <p className='text-slate-400 line-through'>{currencyFormat(product?.price)}</p>

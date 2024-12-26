@@ -14,8 +14,10 @@ const SignUp = () => {
         name: "",
         email: "",
         password: "",
+        phone: "",
         confirmPassword: "",
-        profilePic: ""
+        profilePic: "",
+        address: ""
     })
 
     const navigate = useNavigate()
@@ -157,6 +159,32 @@ const SignUp = () => {
                                         }
                                     </span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div className='grid'>
+                            <label>Address :</label>
+                            <div className='bg-slate-100 p-2'>
+                                <input type="text"
+                                    placeholder='enter your address'
+                                    name='address'
+                                    value={data.address}
+                                    required
+                                    onChange={handleOnChange}
+                                    className='w-full h-full outline-none bg-transparent' />
+                            </div>
+                        </div>
+
+                        <div className='grid'>
+                            <label>Phone Number:</label>
+                            <div className='bg-slate-100 p-2'>
+                                <input type="text"
+                                    placeholder='enter your phone number'
+                                    name='phone'
+                                    value={data.phone}
+                                    required
+                                    onChange={handleOnChange}
+                                    className='w-full h-full outline-none bg-transparent' />
                             </div>
                         </div>
 

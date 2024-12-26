@@ -12,6 +12,9 @@ const productSchema = mongoose.Schema({
     description: String,
     price: Number,
     sellingPrice: Number,
+    weight: String,
+    battery: String,
+    os: String
 }, {
     timestamps: true
 })

@@ -7,6 +7,8 @@ import currencyFormat from '../helper/currencyFormat';
 import OtherProductDisplay from '../components/OtherProductDisplay';
 import addToCart from '../helper/addToCart';
 import Context from '../context';
+import Chart from '../components/Chart';
+
 
 const ProductDetails = () => {
 
@@ -21,6 +23,8 @@ const ProductDetails = () => {
         storage: "",
         description: "",
         price: "",
+        os: "",
+        weight: "",
         sellingPrice: "",
     })
     const params = useParams()
@@ -28,7 +32,6 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(false)
     const productImageListLoading = new Array(4).fill(null)
     const [activeImage, setActiveImage] = useState("")
-
     const [zoomImageCoordinate, setZoomImageCoordinate] = useState({
         x: 0,
         y: 0
@@ -50,9 +53,7 @@ const ProductDetails = () => {
             })
         })
         setLoading(false)
-        console.log("productId", params?.id)
         const dataResponse = await response.json()
-        console.log("dataResponse", dataResponse)
         setData(dataResponse?.data)
         setActiveImage(dataResponse?.data?.productImage[0])
     }
@@ -183,7 +184,7 @@ const ProductDetails = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className='flex flex-col gap-1'>
+                        <div className='flex flex-col gap-1 min-w-[560px]'>
                             <h2 className='text-red-600 rounded-full text-2xl lg:text-3xl font-medium uppercase inline-block w-fit'>{data?.brandName}</h2>
                             <h2 className='text-2xl lg:text-3xl font-medium'>{data?.productName}</h2>
                             <p></p>
@@ -211,13 +212,68 @@ const ProductDetails = () => {
                         </div>
                     )
                 }
+                <div className='h-96 flex flex-col lg:flex-row-reverse gap-4 left-auto'>
+                    <div className='h-[300px] w-[400px] lg:h-96 lg:w-96 bg-slate-200 relative p-1'>
+                        <Chart productData={data} />
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div className='my-5'>
+                <div className="bg-white p-4 rounded-lg shadow-lg ">
+                    <table className="table-auto w-full border-collapse border border-gray-400">
+                        <thead>
+                            <tr className="bg-gray-100">
+                                <th className="border border-gray-300 px-4 py-2 text-left">Specifications</th>
+                                <th className="border border-gray-300 px-4 py-2 text-left">Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td className="border border-gray-300 px-4 py-2">Brand</td>
+                                <td className="border border-gray-300 px-4 py-2 capitalize">{data.brandName}</td>
+                            </tr>
+                            <tr>
+                                <td className="border border-gray-300 px-4 py-2">CPU</td>
+                                <td className="border border-gray-300 px-4 py-2 capitalize">{data?.chipSet}</td>
+                            </tr>
+                            <tr>
+                                <td className="border border-gray-300 px-4 py-2">GPU</td>
+                                <td className="border border-gray-300 px-4 py-2 capitalize">{data?.gpu}</td>
+                            </tr>
+                            <tr>
+                                <td className="border border-gray-300 px-4 py-2">RAM</td>
+                                <td className="border border-gray-300 px-4 py-2 capitalize" >{data?.ram} GB</td>
+                            </tr>
+                            <tr>
+                                <td className="border border-gray-300 px-4 py-2">Storage</td>
+                                <td className="border border-gray-300 px-4 py-2 capitalize">{data?.storage}</td>
+                            </tr>
+                            <tr>
+                                <td className="border border-gray-300 px-4 py-2">Operating System</td>
+                                <td className="border border-gray-300 px-4 py-2 capitalize">{data?.os}</td>
+                            </tr>
+                            <tr>
+                                <td className="border border-gray-300 px-4 py-2">Weight</td>
+                                <td className="border border-gray-300 px-4 py-2">{data?.weight} Kg</td>
+                            </tr>
+                            <tr>
+                                <td className="border border-gray-300 px-4 py-2">Battery</td>
+                                <td className="border border-gray-300 px-4 py-2">{data?.battery}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div className='text-slate-600 font-medium my-5'>
                 Description: {data.description}
             </div>
             {
-                data.brandName && (<OtherProductDisplay brandName={data.brandName} heading="Similar Products" />)
+                data.brandName && (<OtherProductDisplay heading="Similar Products" productId={params?.id} />)
             }
+
 
         </div>
 

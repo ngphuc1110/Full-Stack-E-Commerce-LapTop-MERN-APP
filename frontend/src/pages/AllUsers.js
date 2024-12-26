@@ -7,6 +7,7 @@ import { FaTrash } from "react-icons/fa";
 import ChangeUserRole from '../components/ChangeUserRole';
 
 
+
 const AllUsers = () => {
 
     const [allUsers, setAllUsers] = useState([])
@@ -14,6 +15,7 @@ const AllUsers = () => {
     const [updateUserDetails, setUpdateUserDetails] = useState({
         email: "",
         name: "",
+        address: "",
         role: "",
         _id: "",
 
@@ -36,6 +38,8 @@ const AllUsers = () => {
 
         console.log("dataResponse", dataResponse)
     }
+
+
     useEffect(() => {
         fetchAllUsers()
     }, [])
@@ -47,6 +51,7 @@ const AllUsers = () => {
                         <th>No.</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Adress</th>
                         <th>Role</th>
                         <th>Created Date</th>
                         <th>Edit</th>
@@ -61,6 +66,7 @@ const AllUsers = () => {
                                     <td>{index + 1}</td>
                                     <td>{el?.name}</td>
                                     <td>{el?.email}</td>
+                                    <td>{el?.address}</td>
                                     <td>{el?.role}</td>
                                     <td>{moment(el?.createdAt).format('LL')}</td>
                                     <td>
@@ -72,15 +78,6 @@ const AllUsers = () => {
                                             <MdModeEdit />
                                         </button>
                                     </td>
-                                    {/* <td>
-                                        <button className='bg-red-200 rounded-full p-2 cursor-pointer hover:bg-red-500 hover:text-white'
-                                            onClick={() => {
-                                                setUpdateUserDetails(el)
-
-                                            }}>
-                                            <FaTrash />
-                                        </button>
-                                    </td> */}
                                 </tr>
                             )
                         })
@@ -94,6 +91,7 @@ const AllUsers = () => {
                         onClose={() => setOpenUpdateRole(false)}
                         name={updateUserDetails.name}
                         email={updateUserDetails.email}
+                        address={updateUserDetails.address}
                         role={updateUserDetails.role}
                         userId={updateUserDetails._id}
                         callFunc={fetchAllUsers}

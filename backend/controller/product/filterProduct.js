@@ -11,6 +11,7 @@ const filterProductController = async (req, res) => {
         const storageList = req?.body?.storage || []
         const osList = req?.body?.os || []
         const weightList = req?.body?.weight || []
+        const batteryList = req?.body?.battery || []
 
         const query = {};
         if (brandNameList.length > 0) {
@@ -37,8 +38,19 @@ const filterProductController = async (req, res) => {
         if (weightList.length > 0) {
             query.weight = { $in: weightList };
         }
+        if (batteryList.length > 0) {
+            query.battery = { $in: batteryList };
+        }
 
-        const products = await productModel.find(query)
+        // let products;
+
+        // if (Object.keys(query).length > 0) {
+        //     products = await productModel.find(query);
+        // } else {
+        //     products = [];
+        // }
+
+        products = await productModel.find(query);
 
         res.json({
             data: products,
