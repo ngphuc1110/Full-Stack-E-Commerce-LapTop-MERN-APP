@@ -1,11 +1,11 @@
-
 const bcrypt = require('bcryptjs');
 const userModel = require('../../models/userModel');
-
+const sendEmail = require('../../config/sendEmail');
+const verifyEmailTemplate = require('../../ultis/verifyEmailTemplate');
 
 async function userSignUpController(req, res) {
     try {
-        const { email, password, name, address, phone } = req.body
+        const { email, password, name, address, phone, profilePic } = req.body
 
         const user = await userModel.findOne({ email })
 
@@ -43,12 +43,21 @@ async function userSignUpController(req, res) {
             password: hashPassword
         }
 
-
-
         const userData = new userModel(payload)
         const saveUser = await userData.save()
+        const verifyEmailUrl = `${process.env.FRONTEND_URL}/verify-email?code=${saveUser._id}`
 
-        res.status(201).json({
+        const verifyEmail = await sendEmail({
+            sendTo: email,
+            subject: "Verify Email from LaptopStore",
+            html: verifyEmailTemplate({
+                name,
+                url: verifyEmailUrl
+            })
+        })
+
+
+        return res.status(201).json({
             data: saveUser,
             success: true,
             error: false,

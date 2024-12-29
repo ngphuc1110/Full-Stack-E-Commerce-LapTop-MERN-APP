@@ -16,6 +16,7 @@ import Success from '../pages/Success'
 import Cancel from '../pages/Cancel'
 import Order from '../pages/Order'
 import AllOrders from '../pages/AllOrders'
+import VerifyEmail from '../pages/VerifyEmail'
 
 const router = createBrowserRouter([
     {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
             {
                 path: "order",
                 element: <Order />
+            },
+            {
+                path: "verify-email",
+                element: <VerifyEmail />
             },
             {
                 path: "admin-panel",

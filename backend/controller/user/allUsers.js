@@ -2,8 +2,6 @@ const userModel = require("../../models/userModel")
 
 async function allUsers(req, res) {
     try {
-
-
         const allUsers = await userModel.find()
 
         res.json({

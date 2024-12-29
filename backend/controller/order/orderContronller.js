@@ -3,7 +3,7 @@ const orderProductModel = require("../../models/orderProductModel")
 const orderContronller = async (req, res) => {
     try {
         const currentUserId = req.userId
-        console.log("currentUserId", currentUserId)
+
         const orderList = await orderProductModel.find({ userId: currentUserId }).sort({ createdAt: -1 })
 
         res.json({
@@ -12,7 +12,7 @@ const orderContronller = async (req, res) => {
             error: false,
             success: true,
         })
-        console.log("orderList", orderList)
+
     }
     catch (err) {
         res.status(500).json({

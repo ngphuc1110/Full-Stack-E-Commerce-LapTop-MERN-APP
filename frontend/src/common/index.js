@@ -17,6 +17,10 @@ const SummaryApi = {
         url: `${backendDomain}/api/logout`,
         method: "get"
     },
+    verify_email: {
+        url: `${backendDomain}/api/verify-email`,
+        method: "post"
+    },
     all_users: {
         url: `${backendDomain}/api/all-users`,
         method: "get"

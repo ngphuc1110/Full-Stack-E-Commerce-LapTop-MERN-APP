@@ -1,6 +1,6 @@
 const express = require('express')
-
 const router = express.Router()
+
 
 const userSignUpController = require("../controller/user/userSignUp")
 const userSignInController = require('../controller/user/userSignIn')
@@ -28,10 +28,12 @@ const webHooks = require('../controller/order/webhooks')
 const orderContronller = require('../controller/order/orderContronller')
 const allOrder = require('../controller/order/allOrder')
 const updateOrder = require('../controller/order/updateOrder')
+const verifyEmailUser = require('../controller/user/verifyEmailUser')
 
-
+//user
 router.post("/signup", userSignUpController)
 router.post("/signin", userSignInController)
+router.post("/verify-email", verifyEmailUser)
 router.get("/user-detail", authToken, userDetailController)
 router.get("/logout", userLogOut)
 
