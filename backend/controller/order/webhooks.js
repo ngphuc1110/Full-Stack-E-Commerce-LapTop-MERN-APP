@@ -1,6 +1,8 @@
+const sendEmail = require('../../config/sendEmail')
 const stripe = require('../../config/stripe')
 const addToCartModel = require('../../models/cartProduct')
 const orderProductModel = require('../../models/orderProductModel')
+const orderEmailTemplate = require('../../ultis/orderEmailTemplate')
 const endpointSecret = process.env.STRIPE_ENDPOINT_WEBHOOK_SECRET_KEY
 
 async function getLineItems(lineItems) {
@@ -51,7 +53,7 @@ const webHooks = async (req, res) => {
             const session = event.data.object;
             const lineItems = await stripe.checkout.sessions.listLineItems(session.id)
             const productDetails = await getLineItems(lineItems)
-            console.log("productDetails", productDetails)
+
 
             const orderDetails = {
                 productDetails: productDetails,
@@ -75,6 +77,17 @@ const webHooks = async (req, res) => {
             }
             const order = new orderProductModel(orderDetails)
             const saveOrder = await order.save()
+
+            const orderEmail = await sendEmail({
+                sendTo: order.email,
+                subject: "Order detail from LaptopStore",
+                html: orderEmailTemplate({
+                    name: session.customer_details.name,
+                    phone: session.metadata.customer_phone,
+                    address: session.metadata.customer_address,
+                    product: order,
+                })
+            })
 
             if (saveOrder?._id) {
                 const deleteCartItems = await addToCartModel.deleteMany({ userId: session.metadata.userId })
